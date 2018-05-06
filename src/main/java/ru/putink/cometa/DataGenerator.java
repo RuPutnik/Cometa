@@ -20,8 +20,23 @@ public class DataGenerator {
     }
     public static XYChart.Series<Integer,Integer> getSeries(int[] seriesNumbers){
         XYChart.Series<Integer,Integer> series=null;
-        //series.getData().add(new XYChart.Data<Integer, Integer>())
+        int[] countsNumbers=getCountsNumbersInArray(seriesNumbers);
+        for (int a=0;a<seriesNumbers.length;a++) {
+            series.getData().add(new XYChart.Data<Integer, Integer>(a,countsNumbers[a]));
+        }
 
         return series;
+    }
+    //рассчитывает сколько раз встречалось каждое из чисел от 0 до размера массива и распологает их в соотвествующем порядке
+    // --пример--
+    // 0 - 2 раза
+    // 1 - 5 раз
+    // 2 - 2 раза
+    // 3 - 8 раз
+    // 4 - 4 раза и т.д.
+    private static int[] getCountsNumbersInArray(int[] seriesNumber){
+        int[] arrayCounts=new int[seriesNumber.length];
+
+        return arrayCounts;
     }
 }
