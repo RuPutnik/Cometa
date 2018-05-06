@@ -1,6 +1,8 @@
 package ru.putink.cometa;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -23,6 +26,8 @@ public class GeneralController extends Application implements Initializable{
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
     private final String PATH_ICON="icon/generalIcon.png";
+    private final int DEAFOULT_LIMIT_DIGIT=100;
+    private final int DEAFOULT_COUNT=1000;
 
     @FXML
     private TextField countGeneration;
@@ -63,6 +68,30 @@ public class GeneralController extends Application implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        countGeneration.setOnKeyPressed(new CountGeneration());
+        limitDigitGeneration.setOnKeyPressed(new LimitDigit());
+        buildGeneration.setOnAction(new Build());
+    }
 
+    public class CountGeneration implements EventHandler<KeyEvent>{
+
+        @Override
+        public void handle(KeyEvent event) {
+
+        }
+    }
+    public class LimitDigit implements EventHandler<KeyEvent>{
+
+        @Override
+        public void handle(KeyEvent event) {
+
+        }
+    }
+    public class Build implements EventHandler<ActionEvent>{
+
+        @Override
+        public void handle(ActionEvent event) {
+
+        }
     }
 }
