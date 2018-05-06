@@ -26,8 +26,8 @@ public class GeneralController extends Application implements Initializable{
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
     private final String PATH_ICON="icon/generalIcon.png";
-    private final int DEAFOULT_LIMIT_DIGIT=100;
-    private final int DEAFOULT_COUNT=1000;
+    private final int DEFAULT_LIMIT_DIGIT=100;
+    private final int DEFAULT_COUNT=1000;
 
     @FXML
     private TextField countGeneration;
@@ -36,7 +36,11 @@ public class GeneralController extends Application implements Initializable{
     @FXML
     private Button buildGeneration;
     @FXML
-    private LineChart<NumberAxis,NumberAxis> graphicsPane;
+    private LineChart<Number,Number> graphicsPane;
+    @FXML
+    private NumberAxis xAxis;
+    @FXML
+    private NumberAxis yAxis;
 
     public static void start(){
         launch();
@@ -68,23 +72,49 @@ public class GeneralController extends Application implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        countGeneration.setOnKeyPressed(new CountGeneration());
-        limitDigitGeneration.setOnKeyPressed(new LimitDigit());
+        countGeneration.setOnKeyReleased(new CountGeneration());
+        limitDigitGeneration.setOnKeyReleased(new LimitDigit());
         buildGeneration.setOnAction(new Build());
+
+        countGeneration.setText(String.valueOf(DEFAULT_COUNT));
+        limitDigitGeneration.setText(String.valueOf(DEFAULT_LIMIT_DIGIT));
+
+        graphicsPane.getXAxis().setAutoRanging(false);
+        graphicsPane.getYAxis().setAutoRanging(false);
+        xAxis.setLowerBound(0);
+        xAxis.setUpperBound(DEFAULT_LIMIT_DIGIT);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(DEFAULT_COUNT);
     }
 
     public class CountGeneration implements EventHandler<KeyEvent>{
 
         @Override
         public void handle(KeyEvent event) {
-
+            Integer count;
+            try{
+                count=Integer.parseInt(countGeneration.getText());
+                yAxis.setUpperBound(count);
+            }catch (NumberFormatException ex){
+                count=DEFAULT_COUNT;
+                countGeneration.setText(String.valueOf(count));
+            }
+            System.out.println(count);
         }
     }
     public class LimitDigit implements EventHandler<KeyEvent>{
 
         @Override
         public void handle(KeyEvent event) {
-
+            Integer limit;
+            try{
+                limit=Integer.parseInt(limitDigitGeneration.getText());
+                xAxis.setUpperBound(limit);
+            }catch (NumberFormatException ex){
+                limit=DEFAULT_LIMIT_DIGIT;
+                limitDigitGeneration.setText(String.valueOf(limit));
+            }
+            System.out.println(limit);
         }
     }
     public class Build implements EventHandler<ActionEvent>{

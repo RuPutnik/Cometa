@@ -17,10 +17,10 @@
     </VBox>
     <LineChart fx:id="graphicsPane">
         <xAxis>
-            <NumberAxis label="Значение" tickUnit="1"/>
+            <NumberAxis label="Значение" fx:id="xAxis"/>
         </xAxis>
         <yAxis>
-            <NumberAxis label="Количество" tickUnit="1"/>
+            <NumberAxis label="Количество" fx:id="yAxis"/>
         </yAxis>
     </LineChart>
 </HBox>
