@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class GeneralController extends Application implements Initializable{
@@ -36,7 +38,7 @@ public class GeneralController extends Application implements Initializable{
     @FXML
     private Button buildGeneration;
     @FXML
-    private LineChart<Number,Number> graphicsPane;
+    private LineChart<Integer,Integer> graphicsPane;
     @FXML
     private NumberAxis xAxis;
     @FXML
@@ -86,6 +88,8 @@ public class GeneralController extends Application implements Initializable{
         xAxis.setUpperBound(DEFAULT_LIMIT_DIGIT);
         yAxis.setLowerBound(0);
         yAxis.setUpperBound(DEFAULT_COUNT);
+        countGeneration.setFocusTraversable(false);
+        limitDigitGeneration.setFocusTraversable(false);
     }
 
     public class CountGeneration implements EventHandler<KeyEvent>{
@@ -128,7 +132,9 @@ public class GeneralController extends Application implements Initializable{
 
         @Override
         public void handle(ActionEvent event) {
-
+            int[] seriesNumbers=DataGenerator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
+            XYChart.Series<Integer,Integer> series=DataGenerator.getSeries(seriesNumbers);
+            graphicsPane.getData().add(series);
         }
     }
 }
