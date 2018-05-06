@@ -5,13 +5,16 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <HBox fx:controller="ru.putink.cometa.GeneralController"
       xmlns:fx="http://javafx.com/fxml" alignment="center" minWidth="700" minHeight="500">
     <padding>
         <Insets left="10" right="10" top="10" bottom="10"/>
     </padding>
     <VBox alignment="CENTER" spacing="20">
+        <Label text="Количество итераций"/>
         <TextField promptText="Количество итераций" fx:id="countGeneration"/>
+        <Label text="Предел генерации"/>
         <TextField promptText="Предел генерации" fx:id="limitDigitGeneration"/>
         <Button text="Построить" fx:id="buildGeneration"/>
     </VBox>

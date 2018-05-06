@@ -133,7 +133,7 @@ public class GeneralController extends Application implements Initializable{
         @Override
         public void handle(ActionEvent event) {
             int[] seriesNumbers=DataGenerator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
-            XYChart.Series<Integer,Integer> series=DataGenerator.getSeries(seriesNumbers);
+            XYChart.Series<Integer,Integer> series=DataGenerator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
             graphicsPane.getData().add(series);
         }
     }
