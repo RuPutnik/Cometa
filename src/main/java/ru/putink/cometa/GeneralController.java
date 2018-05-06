@@ -1,20 +1,38 @@
 package ru.putink.cometa;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class GeneralController extends Application {
+public class GeneralController extends Application implements Initializable{
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
     private final String PATH_ICON="icon/generalIcon.png";
+
+    @FXML
+    private TextField countGeneration;
+    @FXML
+    private TextField limitDigitGeneration;
+    @FXML
+    private Button buildGeneration;
+    @FXML
+    private LineChart<NumberAxis,NumberAxis> graphicsPane;
+
     public static void start(){
         launch();
     }
@@ -35,9 +53,16 @@ public class GeneralController extends Application {
             alertError.setContentText("При заугрзки главного окна возникла ошибка");
             ex.printStackTrace();
         }
-        stage.setWidth(400);
-        stage.setHeight(300);
+        stage.setWidth(700);
+        stage.setHeight(500);
         stage.show();
+        stage.setResizable(false);
+        stage.setTitle("Cometa");
         generalStage=stage;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }
