@@ -59,7 +59,8 @@ public class GeneralController extends Application implements Initializable{
         }catch (IOException|NullPointerException ex){
             Alert alertError=new Alert(Alert.AlertType.ERROR);
             alertError.setTitle("Ошибка загрузки");
-            alertError.setContentText("При заугрзки главного окна возникла ошибка");
+            alertError.setHeaderText("Ошибка загрузки главного окна");
+            alertError.setContentText("Макет главного окна недоступен или поврежден");
             ex.printStackTrace();
         }
         stage.setWidth(700);
@@ -88,33 +89,39 @@ public class GeneralController extends Application implements Initializable{
     }
 
     public class CountGeneration implements EventHandler<KeyEvent>{
-
         @Override
         public void handle(KeyEvent event) {
             Integer count;
             try{
                 count=Integer.parseInt(countGeneration.getText());
-                yAxis.setUpperBound(count);
             }catch (NumberFormatException ex){
                 count=DEFAULT_COUNT;
                 countGeneration.setText(String.valueOf(count));
+                Alert invalidSign=new Alert(Alert.AlertType.ERROR);
+                invalidSign.setTitle("Ошибка");
+                invalidSign.setHeaderText("Ошибка ввода количества итераций");
+                invalidSign.setContentText("Вы ввели недопустимый символ!");
+                invalidSign.show();
             }
-            System.out.println(count);
+            yAxis.setUpperBound(count);
         }
     }
     public class LimitDigit implements EventHandler<KeyEvent>{
-
         @Override
         public void handle(KeyEvent event) {
             Integer limit;
             try{
                 limit=Integer.parseInt(limitDigitGeneration.getText());
-                xAxis.setUpperBound(limit);
             }catch (NumberFormatException ex){
                 limit=DEFAULT_LIMIT_DIGIT;
                 limitDigitGeneration.setText(String.valueOf(limit));
+                Alert invalidSign=new Alert(Alert.AlertType.ERROR);
+                invalidSign.setTitle("Ошибка");
+                invalidSign.setHeaderText("Ошибка ввода граничного числа");
+                invalidSign.setContentText("Вы ввели недопустимый символ!");
+                invalidSign.show();
             }
-            System.out.println(limit);
+            xAxis.setUpperBound(limit);
         }
     }
     public class Build implements EventHandler<ActionEvent>{
