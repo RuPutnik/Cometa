@@ -1,29 +1,51 @@
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<HBox fx:controller="ru.putink.cometa.GeneralController"
-      xmlns:fx="http://javafx.com/fxml" alignment="center" minWidth="700" minHeight="500">
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="center" minHeight="500" minWidth="700" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.putink.cometa.GeneralController">
     <padding>
-        <Insets left="10" right="10" top="10" bottom="10"/>
+        <Insets bottom="10" left="10" right="10" top="20" />
     </padding>
-    <VBox alignment="CENTER" spacing="20">
-        <Label text="Количество итераций"/>
-        <TextField promptText="Количество итераций" fx:id="countGeneration"/>
-        <Label text="Предел генерации"/>
-        <TextField promptText="Предел генерации" fx:id="limitDigitGeneration"/>
-        <Button text="Построить" fx:id="buildGeneration"/>
+    <VBox alignment="TOP_CENTER" spacing="10">
+       <!-- <TextArea fx:id="infoArea" editable="false" maxWidth="150" maxHeight="200"/>-->
+        <Label text="Количество итераций" />
+        <TextField fx:id="countGeneration" promptText="Количество итераций" />
+        <Label text="Предел генерации" />
+        <TextField fx:id="limitDigitGeneration" promptText="Предел генерации" />
+        <Button fx:id="buildGeneration" text="Построить" />
+        <Label text="Полученные значения" />
+        <TextField fx:id="generatedValues"/>
+        <Label text="Количество" />
+        <TextField fx:id="countEachValues"/>
+        <Label text="Видимая область"/>
+      <HBox prefHeight="50.0" prefWidth="200.0" spacing="10" alignment="CENTER">
+         <children>
+            <Label text="X1" />
+            <TextField maxWidth="40"/>
+            <Label text="- X2" />
+            <TextField maxWidth="40"/>
+         </children></HBox>
+      <HBox prefHeight="50.0" prefWidth="200.0" spacing="10" alignment="CENTER">
+         <children>
+            <Label text="Y1" />
+            <TextField maxWidth="40"/>
+            <Label text="- Y2" />
+            <TextField maxWidth="40"/>
+         </children></HBox>
     </VBox>
     <LineChart fx:id="graphicsPane">
         <xAxis>
-            <NumberAxis label="Значение" fx:id="xAxis"/>
+            <NumberAxis label="Значение" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-            <NumberAxis label="Количество" fx:id="yAxis"/>
+            <NumberAxis fx:id="yAxis" label="Количество" />
         </yAxis>
     </LineChart>
 </HBox>

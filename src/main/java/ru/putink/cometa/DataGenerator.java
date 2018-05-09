@@ -1,8 +1,11 @@
 package ru.putink.cometa;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Tooltip;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class DataGenerator {
@@ -23,12 +26,13 @@ public class DataGenerator {
     }
     public static XYChart.Series<Integer,Integer> getSeries(int[] seriesNumbers,int rightLimit){
         XYChart.Series<Integer,Integer> series=new XYChart.Series<>();
-        series.setName("Кол-во генераций чисел при "+seriesNumbers.length+" итерациях и границе "+rightLimit);
+        series.setName("Кол-во генераций чисел\nпри "+seriesNumbers.length+" итерациях\nи границе "+rightLimit);
 
         int[] countsNumbers=getCountsNumbersInArray(seriesNumbers,rightLimit);
         for (int a=0;a<countsNumbers.length;a++) {
             series.getData().add(new XYChart.Data<Integer, Integer>(a,countsNumbers[a]));
         }
+
 
         return series;
     }
@@ -43,8 +47,8 @@ public class DataGenerator {
         int[] arrayCounts=new int[rightLimit+1];
 
         for (int a=0;a<arrayCounts.length;a++){
-            for (int b=0;b<seriesNumber.length;b++){
-                if(seriesNumber[b]==a){
+            for (int aSeriesNumber : seriesNumber) {
+                if (aSeriesNumber == a) {
                     arrayCounts[a]++;
                 }
             }
