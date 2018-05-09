@@ -15,10 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -26,9 +23,11 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class GeneralController extends Application implements Initializable{
+    private DataGenerator generator;
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
     private final String PATH_ICON="icon/generalIcon.png";
@@ -47,6 +46,10 @@ public class GeneralController extends Application implements Initializable{
     private NumberAxis xAxis;
     @FXML
     private NumberAxis yAxis;
+    @FXML
+    private TextField generatedValues;
+    @FXML
+    private TextField countEachValues;
 
     public static void start(){
         launch();
@@ -69,8 +72,8 @@ public class GeneralController extends Application implements Initializable{
             alertError.setContentText("Макет главного окна недоступен или поврежден");
             ex.printStackTrace();
         }
-        stage.setWidth(700);
-        stage.setHeight(500);
+        stage.setWidth(800);
+        stage.setHeight(600);
         stage.show();
         stage.setResizable(false);
         stage.setTitle("Cometa");
@@ -79,6 +82,8 @@ public class GeneralController extends Application implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        generator=new DataGenerator();
+
         countGeneration.setOnKeyReleased(new CountGeneration());
         limitDigitGeneration.setOnKeyReleased(new LimitDigit());
         buildGeneration.setOnAction(new Build());
@@ -135,8 +140,10 @@ public class GeneralController extends Application implements Initializable{
     public class Build implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent event) {
-            int[] seriesNumbers=DataGenerator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
-            XYChart.Series<Integer,Integer> series=DataGenerator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
+            int[] seriesNumbers=generator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
+            generatedValues.setText(Arrays.toString(seriesNumbers));
+            countEachValues.setText(Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
+            XYChart.Series<Integer,Integer> series=generator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
             graphicsPane.getData().add(series);
           //graphicsPane.setLegendSide(Side.RIGHT);
         }

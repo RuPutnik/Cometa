@@ -9,38 +9,38 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox alignment="center" minHeight="500" minWidth="700" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.putink.cometa.GeneralController">
+<HBox alignment="center" minHeight="600" minWidth="800" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.putink.cometa.GeneralController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="20" />
     </padding>
     <VBox alignment="TOP_CENTER" spacing="10">
        <!-- <TextArea fx:id="infoArea" editable="false" maxWidth="150" maxHeight="200"/>-->
         <Label text="Количество итераций" />
-        <TextField fx:id="countGeneration" promptText="Количество итераций" />
+        <TextField fx:id="countGeneration" promptText="Количество итераций" maxWidth="300"/>
         <Label text="Предел генерации" />
-        <TextField fx:id="limitDigitGeneration" promptText="Предел генерации" />
+        <TextField fx:id="limitDigitGeneration" promptText="Предел генерации" maxWidth="300"/>
         <Button fx:id="buildGeneration" text="Построить" />
         <Label text="Полученные значения" />
-        <TextField fx:id="generatedValues"/>
-        <Label text="Количество" />
-        <TextField fx:id="countEachValues"/>
-        <Label text="Видимая область"/>
-      <HBox prefHeight="50.0" prefWidth="200.0" spacing="10" alignment="CENTER">
+        <TextField fx:id="generatedValues" editable="false" maxWidth="300"/>
+        <Label text="Количества значений от 0 до предела генерации по порядку" wrapText="true" maxWidth="300"/>
+        <TextField fx:id="countEachValues" editable="false" maxWidth="300"/>
+        <Label text="Видимая область" />
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10">
          <children>
             <Label text="X1" />
-            <TextField maxWidth="40"/>
+            <TextField maxWidth="40" />
             <Label text="- X2" />
-            <TextField maxWidth="40"/>
+            <TextField maxWidth="40" />
          </children></HBox>
-      <HBox prefHeight="50.0" prefWidth="200.0" spacing="10" alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10">
          <children>
             <Label text="Y1" />
-            <TextField maxWidth="40"/>
+            <TextField maxWidth="40" />
             <Label text="- Y2" />
-            <TextField maxWidth="40"/>
+            <TextField maxWidth="40" />
          </children></HBox>
     </VBox>
-    <LineChart fx:id="graphicsPane">
+    <LineChart fx:id="graphicsPane" prefHeight="570.0" prefWidth="585.0">
         <xAxis>
             <NumberAxis label="Значение" fx:id="xAxis" />
         </xAxis>

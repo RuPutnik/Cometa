@@ -9,8 +9,8 @@ import javafx.scene.control.Tooltip;
 import java.util.Random;
 
 public class DataGenerator {
-    static Random random=new Random();
-    public static int[] createSeriesNumbers(int count,int rightLimit){
+    Random random=new Random();
+    public int[] createSeriesNumbers(int count,int rightLimit){
         int[] series=new int[count];
 
         for (int a=0;a<series.length;a++){
@@ -21,10 +21,10 @@ public class DataGenerator {
 
         return series;
     }
-    private static int getRandomNumber(int rightLimit){
+    private int getRandomNumber(int rightLimit){
         return random.nextInt(rightLimit);
     }
-    public static XYChart.Series<Integer,Integer> getSeries(int[] seriesNumbers,int rightLimit){
+    public XYChart.Series<Integer,Integer> getSeries(int[] seriesNumbers,int rightLimit){
         XYChart.Series<Integer,Integer> series=new XYChart.Series<>();
         series.setName("Кол-во генераций чисел\nпри "+seriesNumbers.length+" итерациях\nи границе "+rightLimit);
 
@@ -43,7 +43,7 @@ public class DataGenerator {
     // 2 - 2 раза
     // 3 - 8 раз
     // 4 - 4 раза и т.д.
-    private static int[] getCountsNumbersInArray(int[] seriesNumber,int rightLimit){
+    public int[] getCountsNumbersInArray(int[] seriesNumber,int rightLimit){
         int[] arrayCounts=new int[rightLimit+1];
 
         for (int a=0;a<arrayCounts.length;a++){
