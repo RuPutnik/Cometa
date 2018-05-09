@@ -31,8 +31,10 @@ public class GeneralController extends Application implements Initializable{
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
     private final String PATH_ICON="icon/generalIcon.png";
-    private final int DEFAULT_LIMIT_DIGIT=100;
+    private final int DEFAULT_LIMIT_NUMBER=100;
     private final int DEFAULT_COUNT=1000;
+    private int limitNumber=DEFAULT_LIMIT_NUMBER;
+    private int countNumber=DEFAULT_COUNT;
 
     @FXML
     private TextField countGeneration;
@@ -50,6 +52,14 @@ public class GeneralController extends Application implements Initializable{
     private TextField generatedValues;
     @FXML
     private TextField countEachValues;
+    @FXML
+    private TextField fieldX1;
+    @FXML
+    private TextField fieldX2;
+    @FXML
+    private TextField fieldY1;
+    @FXML
+    private TextField fieldY2;
 
     public static void start(){
         launch();
@@ -87,14 +97,18 @@ public class GeneralController extends Application implements Initializable{
         countGeneration.setOnKeyReleased(new CountGeneration());
         limitDigitGeneration.setOnKeyReleased(new LimitDigit());
         buildGeneration.setOnAction(new Build());
+        fieldX1.setOnKeyReleased(new FieldXYCoordinates(fieldX1,xAxis,false));
+        fieldX2.setOnKeyReleased(new FieldXYCoordinates(fieldX2,xAxis,true));
+        fieldY1.setOnKeyReleased(new FieldXYCoordinates(fieldY1,yAxis,false));
+        fieldY2.setOnKeyReleased(new FieldXYCoordinates(fieldY2,yAxis,true));
 
         countGeneration.setText(String.valueOf(DEFAULT_COUNT));
-        limitDigitGeneration.setText(String.valueOf(DEFAULT_LIMIT_DIGIT));
+        limitDigitGeneration.setText(String.valueOf(DEFAULT_LIMIT_NUMBER));
 
         graphicsPane.getXAxis().setAutoRanging(false);
         graphicsPane.getYAxis().setAutoRanging(false);
         xAxis.setLowerBound(0);
-        xAxis.setUpperBound(DEFAULT_LIMIT_DIGIT);
+        xAxis.setUpperBound(DEFAULT_LIMIT_NUMBER);
         yAxis.setLowerBound(0);
         yAxis.setUpperBound(DEFAULT_COUNT);
         countGeneration.setFocusTraversable(false);
@@ -107,6 +121,7 @@ public class GeneralController extends Application implements Initializable{
             Integer count;
             try{
                 count=Integer.parseInt(countGeneration.getText());
+                if(event.getText().equals("-")) throw new NumberFormatException();
             }catch (NumberFormatException ex){
                 count=DEFAULT_COUNT;
                 countGeneration.setText(String.valueOf(count));
@@ -116,7 +131,7 @@ public class GeneralController extends Application implements Initializable{
                 invalidSign.setContentText("Вы ввели недопустимый символ!");
                 invalidSign.show();
             }
-            yAxis.setUpperBound(count);
+                countNumber=count;
         }
     }
     public class LimitDigit implements EventHandler<KeyEvent>{
@@ -125,8 +140,9 @@ public class GeneralController extends Application implements Initializable{
             Integer limit;
             try{
                 limit=Integer.parseInt(limitDigitGeneration.getText());
+                if(event.getText().equals("-")) throw new NumberFormatException();
             }catch (NumberFormatException ex){
-                limit=DEFAULT_LIMIT_DIGIT;
+                limit=DEFAULT_LIMIT_NUMBER;
                 limitDigitGeneration.setText(String.valueOf(limit));
                 Alert invalidSign=new Alert(Alert.AlertType.ERROR);
                 invalidSign.setTitle("Ошибка");
@@ -134,7 +150,38 @@ public class GeneralController extends Application implements Initializable{
                 invalidSign.setContentText("Вы ввели недопустимый символ!");
                 invalidSign.show();
             }
-            xAxis.setUpperBound(limit);
+                limitNumber=limit;
+        }
+    }
+    public class FieldXYCoordinates implements EventHandler<KeyEvent>{
+        private TextField field;
+        private NumberAxis axis;
+        private boolean upper;
+        public FieldXYCoordinates(TextField field,NumberAxis axis,boolean upper){
+            this.field=field;
+            this.axis=axis;
+            this.upper=upper;
+        }
+        @Override
+        public void handle(KeyEvent event) {
+            Integer value;
+            try{
+                value=Integer.parseInt(field.getText());
+                if(event.getText().equals("-")) throw new NumberFormatException();
+                if(upper){
+                    axis.setUpperBound(value);
+                }else {
+                    axis.setLowerBound(value);
+                }
+            }catch (NumberFormatException ex){
+                Alert invalidSign=new Alert(Alert.AlertType.ERROR);
+                invalidSign.setTitle("Ошибка");
+                invalidSign.setHeaderText("Ошибка ввода координаты");
+                invalidSign.setContentText("Координата должна быть целым положительным числом!");
+                invalidSign.show();
+                field.deleteText(field.getLength(),field.getLength()-1);
+            }
+
         }
     }
     public class Build implements EventHandler<ActionEvent>{
@@ -145,6 +192,14 @@ public class GeneralController extends Application implements Initializable{
             countEachValues.setText(Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
             XYChart.Series<Integer,Integer> series=generator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
             graphicsPane.getData().add(series);
+            xAxis.setUpperBound(limitNumber);
+            yAxis.setUpperBound(countNumber);
+            xAxis.setLowerBound(0);
+            yAxis.setLowerBound(0);
+            fieldX1.setText("0");
+            fieldX2.setText(String.valueOf(limitNumber));
+            fieldY1.setText("0");
+            fieldY2.setText(String.valueOf(countNumber));
           //graphicsPane.setLegendSide(Side.RIGHT);
         }
     }
