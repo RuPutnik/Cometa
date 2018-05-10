@@ -19,7 +19,10 @@
         <TextField fx:id="countGeneration" promptText="Количество итераций" maxWidth="300"/>
         <Label text="Предел генерации" />
         <TextField fx:id="limitDigitGeneration" promptText="Предел генерации" maxWidth="300"/>
+      <HBox alignment="CENTER" spacing="10">
         <Button fx:id="buildGeneration" text="Построить" />
+        <Button fx:id="saveToFile" text="Выгрузить в файл" disable="true"/>
+      </HBox>
         <Label text="Полученные значения" />
         <TextField fx:id="generatedValues" editable="false" maxWidth="300"/>
         <Label text="Количества значений от 0 до предела генерации по порядку" wrapText="true" maxWidth="300"/>

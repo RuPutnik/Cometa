@@ -60,6 +60,8 @@ public class GeneralController extends Application implements Initializable{
     private TextField fieldY1;
     @FXML
     private TextField fieldY2;
+    @FXML
+    private Button saveToFile;
 
     public static void start(){
         launch();
@@ -179,7 +181,11 @@ public class GeneralController extends Application implements Initializable{
                 invalidSign.setHeaderText("Ошибка ввода координаты");
                 invalidSign.setContentText("Координата должна быть целым положительным числом!");
                 invalidSign.show();
-                field.deleteText(field.getLength(),field.getLength()-1);
+                if(upper){
+                    field.setText(String.valueOf((int)axis.getUpperBound()));
+                }else {
+                    field.setText(String.valueOf((int)axis.getLowerBound()));
+                }
             }
 
         }
