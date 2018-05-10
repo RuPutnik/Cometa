@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class GeneralController extends Application implements Initializable{
+    private FileExecutor fileExecutor;
     private DataGenerator generator;
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
@@ -62,6 +63,8 @@ public class GeneralController extends Application implements Initializable{
     private TextField fieldY2;
     @FXML
     private Button saveToFile;
+    @FXML
+    private Button readFromFile;
 
     public static void start(){
         launch();
@@ -95,10 +98,13 @@ public class GeneralController extends Application implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         generator=new DataGenerator();
+        fileExecutor=new FileExecutor();
 
         countGeneration.setOnKeyReleased(new CountGeneration());
         limitDigitGeneration.setOnKeyReleased(new LimitDigit());
         buildGeneration.setOnAction(new Build());
+        saveToFile.setOnAction(new SaveSeries());
+        readFromFile.setOnAction(new LoadSeries());
         fieldX1.setOnKeyReleased(new FieldXYCoordinates(fieldX1,xAxis,false));
         fieldX2.setOnKeyReleased(new FieldXYCoordinates(fieldX2,xAxis,true));
         fieldY1.setOnKeyReleased(new FieldXYCoordinates(fieldY1,yAxis,false));
@@ -116,7 +122,19 @@ public class GeneralController extends Application implements Initializable{
         countGeneration.setFocusTraversable(false);
         limitDigitGeneration.setFocusTraversable(false);
     }
-
+    public class SaveSeries implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event) {
+           fileExecutor.saveToFile(graphicsPane.getData());
+        }
+    }
+    public class LoadSeries implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event) {
+            graphicsPane.getData().add(fileExecutor.readSeriesFromFile());
+            //Написать метод который будет вычислять максимальное значение Х и У осей по размеру серии
+        }
+    }
     public class CountGeneration implements EventHandler<KeyEvent>{
         @Override
         public void handle(KeyEvent event) {
@@ -206,6 +224,7 @@ public class GeneralController extends Application implements Initializable{
             fieldX2.setText(String.valueOf(limitNumber));
             fieldY1.setText("0");
             fieldY2.setText(String.valueOf(countNumber));
+            saveToFile.setDisable(false);
           //graphicsPane.setLegendSide(Side.RIGHT);
         }
     }

@@ -21,7 +21,8 @@
         <TextField fx:id="limitDigitGeneration" promptText="Предел генерации" maxWidth="300"/>
       <HBox alignment="CENTER" spacing="10">
         <Button fx:id="buildGeneration" text="Построить" />
-        <Button fx:id="saveToFile" text="Выгрузить в файл" disable="true"/>
+        <Button fx:id="saveToFile" text="Сохранить" disable="true"/>
+        <Button fx:id="readFromFile" text="Загрузить"/>
       </HBox>
         <Label text="Полученные значения" />
         <TextField fx:id="generatedValues" editable="false" maxWidth="300"/>
