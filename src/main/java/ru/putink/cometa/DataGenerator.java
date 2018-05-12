@@ -26,7 +26,7 @@ public class DataGenerator {
     }
     public XYChart.Series<Integer,Integer> getSeries(int[] seriesNumbers,int rightLimit){
         XYChart.Series<Integer,Integer> series=new XYChart.Series<>();
-        series.setName("Кол-во генераций чисел при "+seriesNumbers.length+" итерациях и границе "+rightLimit);
+        series.setName(GeneralController.COUNT_SERIES+")Кол-во генераций чисел при "+seriesNumbers.length+" итерациях и границе "+rightLimit);
 
         int[] countsNumbers=getCountsNumbersInArray(seriesNumbers,rightLimit);
         for (int a=0;a<countsNumbers.length;a++) {

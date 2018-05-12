@@ -33,6 +33,7 @@ public class GeneralController extends Application implements Initializable{
     private final int DEFAULT_COUNT=1000;
     private int limitNumber=DEFAULT_LIMIT_NUMBER;
     private int countNumber=DEFAULT_COUNT;
+    public static int COUNT_SERIES=1;
 
     @FXML
     private TextField countGeneration;
@@ -221,6 +222,7 @@ public class GeneralController extends Application implements Initializable{
             fieldY1.setText("0");
             fieldY2.setText(String.valueOf(countNumber));
             saveToFile.setDisable(false);
+            COUNT_SERIES++;
           //graphicsPane.setLegendSide(Side.RIGHT);
         }
     }
