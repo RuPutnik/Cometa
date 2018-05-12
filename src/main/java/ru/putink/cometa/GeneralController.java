@@ -1,15 +1,11 @@
 package ru.putink.cometa;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.NodeOrientation;
-import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -24,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class GeneralController extends Application implements Initializable{
@@ -75,7 +72,7 @@ public class GeneralController extends Application implements Initializable{
     }
     private void renderGeneralWindow(Stage stage){
         try {
-            Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource(PATH_LAYOUT));
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource(PATH_LAYOUT)));
             stage.setScene(new Scene(parent));
             if(new File(PATH_ICON).exists()) {
                 generalStage.getIcons().add(new Image(PATH_ICON));
@@ -131,8 +128,7 @@ public class GeneralController extends Application implements Initializable{
     public class LoadSeries implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent event) {
-            graphicsPane.getData().add(fileExecutor.readSeriesFromFile());
-            //Написать метод который будет вычислять максимальное значение Х и У осей по размеру серии
+            graphicsPane.getData().addAll(fileExecutor.readSeriesFromFile());
         }
     }
     public class CountGeneration implements EventHandler<KeyEvent>{
@@ -177,7 +173,7 @@ public class GeneralController extends Application implements Initializable{
         private TextField field;
         private NumberAxis axis;
         private boolean upper;
-        public FieldXYCoordinates(TextField field,NumberAxis axis,boolean upper){
+        FieldXYCoordinates(TextField field, NumberAxis axis, boolean upper){
             this.field=field;
             this.axis=axis;
             this.upper=upper;
