@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -130,6 +131,22 @@ public class GeneralController extends Application implements Initializable{
         countGeneration.setFocusTraversable(false);
         limitDigitGeneration.setFocusTraversable(false);
     }
+    private void updateInfoPoints(){
+        for (int c=0;c<graphicsPane.getData().size();c++) {
+            ObservableList<XYChart.Data<Integer, Integer>> dataList = ((XYChart.Series<Integer, Integer>) graphicsPane.getData().get(c)).getData();
+            dataList.forEach(data -> {
+                Node node = data.getNode();
+                Tooltip tooltip = new Tooltip("Значение: " + data.getXValue().toString() + '\n' + "Количество: " + data.getYValue().toString());
+                Tooltip.install(node, tooltip);
+            });
+        }
+    }
+    private void updateNumbersSeries(){
+        for (int b=1;b<graphicsPane.getData().size()+1;b++){
+            String oldName=graphicsPane.getData().get(b-1).getName();
+            graphicsPane.getData().get(b-1).setName(b+oldName.substring(1));
+        }
+    }
     public class SaveSeries implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent event) {
@@ -142,10 +159,8 @@ public class GeneralController extends Application implements Initializable{
             ArrayList<XYChart.Series<Integer, Integer>> allSeries=fileExecutor.readSeriesFromFile();
             graphicsPane.getData().addAll(allSeries);
             COUNT_SERIES=COUNT_SERIES+allSeries.size();
-            for (int b=1;b<graphicsPane.getData().size()+1;b++){
-                String oldName=graphicsPane.getData().get(b-1).getName();
-                graphicsPane.getData().get(b-1).setName(b+oldName.substring(1));
-            }
+            updateNumbersSeries();
+            updateInfoPoints();
         }
     }
     public class CountGeneration implements EventHandler<KeyEvent>{
@@ -226,7 +241,7 @@ public class GeneralController extends Application implements Initializable{
         public void handle(ActionEvent event) {
             int[] seriesNumbers=generator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
             generatedValues.setText(generatedValues.getText()+" ; "+Arrays.toString(seriesNumbers));
-            countEachValues.setText(countEachValues+" ; "+Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
+            countEachValues.setText(countEachValues.getText()+" ; "+Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
             XYChart.Series<Integer,Integer> series=generator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
             graphicsPane.getData().add(series);
             xAxis.setUpperBound(limitNumber);
@@ -239,6 +254,8 @@ public class GeneralController extends Application implements Initializable{
             fieldY2.setText(String.valueOf(countNumber));
             saveToFile.setDisable(false);
             COUNT_SERIES++;
+
+           updateInfoPoints();
         }
     }
     private class DeleteSeries implements EventHandler<ActionEvent>{
@@ -251,10 +268,7 @@ public class GeneralController extends Application implements Initializable{
                 }else {
                     graphicsPane.getData().remove(numberDeleteSeries-1);
                     COUNT_SERIES--;
-                    for (int b=1;b<graphicsPane.getData().size()+1;b++){
-                        String oldName=graphicsPane.getData().get(b-1).getName();
-                        graphicsPane.getData().get(b-1).setName(b+oldName.substring(1));
-                    }
+                    updateNumbersSeries();
                 }
             }catch (IndexOutOfBoundsException ex){
                 Alert invalidNumberSeries = new Alert(Alert.AlertType.ERROR);
