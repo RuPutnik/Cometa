@@ -104,8 +104,6 @@ public class FileExecutor{
     }
     private Integer[] stringToArray(String lineOfIntegers){
         String str1=lineOfIntegers;//получаем содержимое текстового поля
-       // str1=str1.replace("[ ","");
-       // str1=str1.replace(" ]","");
         Integer[] integerArray = new Integer[str1.split(" ").length];
         String[] numbersArray=str1.split(" ");
         for (int i=0; i<numbersArray.length; i++)

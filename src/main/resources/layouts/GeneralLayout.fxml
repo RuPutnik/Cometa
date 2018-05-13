@@ -46,8 +46,8 @@
       <Label text="Удаление серии" />
       <HBox prefHeight="36.0" prefWidth="300.0" spacing="10" alignment="CENTER">
          <children>
-            <TextField promptText="Номер серии"/>
-            <Button mnemonicParsing="false" text="Удалить" />
+            <TextField promptText="Номер серии" fx:id="numberSeriesField"/>
+            <Button mnemonicParsing="false" text="Удалить" fx:id="deleteSeries"/>
          </children>
       </HBox>
     </VBox>

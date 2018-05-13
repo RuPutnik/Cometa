@@ -1,6 +1,7 @@
 package ru.putink.cometa;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,19 +17,16 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class GeneralController extends Application implements Initializable{
     private FileExecutor fileExecutor;
     private DataGenerator generator;
     private Stage generalStage;
     private final String PATH_LAYOUT="layouts/GeneralLayout.fxml";
-    private final String PATH_ICON="icon/generalIcon.png";
+    private final String PATH_ICON="icon/icon.png";
     private final int DEFAULT_LIMIT_NUMBER=100;
     private final int DEFAULT_COUNT=1000;
     private int limitNumber=DEFAULT_LIMIT_NUMBER;
@@ -63,6 +61,10 @@ public class GeneralController extends Application implements Initializable{
     private Button saveToFile;
     @FXML
     private Button readFromFile;
+    @FXML
+    private TextField numberSeriesField;
+    @FXML
+    private Button deleteSeries;
 
     public static void start(){
         launch();
@@ -75,8 +77,15 @@ public class GeneralController extends Application implements Initializable{
         try {
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource(PATH_LAYOUT)));
             stage.setScene(new Scene(parent));
-            if(new File(PATH_ICON).exists()) {
+            generalStage=stage;
+            try{
                 generalStage.getIcons().add(new Image(PATH_ICON));
+            }catch (NullPointerException ex){
+                Alert alertError=new Alert(Alert.AlertType.ERROR);
+                alertError.setTitle("Ошибка загрузки");
+                alertError.setHeaderText("Ошибка загрузки иконки");
+                alertError.setContentText("Иконка программы недоступна или повреждена");
+                ex.printStackTrace();
             }
         }catch (IOException|NullPointerException ex){
             Alert alertError=new Alert(Alert.AlertType.ERROR);
@@ -85,12 +94,12 @@ public class GeneralController extends Application implements Initializable{
             alertError.setContentText("Макет главного окна недоступен или поврежден");
             ex.printStackTrace();
         }
-        stage.setWidth(800);
-        stage.setHeight(600);
-        stage.show();
-        stage.setResizable(false);
-        stage.setTitle("Cometa");
-        generalStage=stage;
+        generalStage.setWidth(800);
+        generalStage.setHeight(600);
+        generalStage.show();
+        generalStage.setResizable(false);
+        generalStage.setTitle("Cometa");
+
     }
 
     @Override
@@ -107,6 +116,7 @@ public class GeneralController extends Application implements Initializable{
         fieldX2.setOnKeyReleased(new FieldXYCoordinates(fieldX2,xAxis,true));
         fieldY1.setOnKeyReleased(new FieldXYCoordinates(fieldY1,yAxis,false));
         fieldY2.setOnKeyReleased(new FieldXYCoordinates(fieldY2,yAxis,true));
+        deleteSeries.setOnAction(new DeleteSeries());
 
         countGeneration.setText(String.valueOf(DEFAULT_COUNT));
         limitDigitGeneration.setText(String.valueOf(DEFAULT_LIMIT_NUMBER));
@@ -129,7 +139,13 @@ public class GeneralController extends Application implements Initializable{
     public class LoadSeries implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent event) {
-            graphicsPane.getData().addAll(fileExecutor.readSeriesFromFile());
+            ArrayList<XYChart.Series<Integer, Integer>> allSeries=fileExecutor.readSeriesFromFile();
+            graphicsPane.getData().addAll(allSeries);
+            COUNT_SERIES=COUNT_SERIES+allSeries.size();
+            for (int b=1;b<graphicsPane.getData().size()+1;b++){
+                String oldName=graphicsPane.getData().get(b-1).getName();
+                graphicsPane.getData().get(b-1).setName(b+oldName.substring(1));
+            }
         }
     }
     public class CountGeneration implements EventHandler<KeyEvent>{
@@ -224,6 +240,36 @@ public class GeneralController extends Application implements Initializable{
             saveToFile.setDisable(false);
             COUNT_SERIES++;
           //graphicsPane.setLegendSide(Side.RIGHT);
+        }
+    }
+    private class DeleteSeries implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event) {
+            int numberDeleteSeries=Integer.parseInt(numberSeriesField.getText());
+            try {
+                if (graphicsPane.getData().get(numberDeleteSeries-1) == null){
+                    throw new IndexOutOfBoundsException();
+                }else {
+                    graphicsPane.getData().remove(numberDeleteSeries-1);
+                    COUNT_SERIES--;
+                    for (int b=1;b<graphicsPane.getData().size()+1;b++){
+                        String oldName=graphicsPane.getData().get(b-1).getName();
+                        graphicsPane.getData().get(b-1).setName(b+oldName.substring(1));
+                    }
+                }
+            }catch (IndexOutOfBoundsException ex){
+                Alert invalidNumberSeries = new Alert(Alert.AlertType.ERROR);
+                invalidNumberSeries.setTitle("Ошибка");
+                invalidNumberSeries.setHeaderText("Ошибка ввода номера серии");
+                invalidNumberSeries.setContentText("Серия под данным номером не существует!");
+                invalidNumberSeries.show();
+            }catch (NumberFormatException ex){
+                Alert invalidNumberSeries = new Alert(Alert.AlertType.ERROR);
+                invalidNumberSeries.setTitle("Ошибка");
+                invalidNumberSeries.setHeaderText("Ошибка ввода номера серии");
+                invalidNumberSeries.setContentText("Введенный текст не является числом!");
+                invalidNumberSeries.show();
+            }
         }
     }
 }
