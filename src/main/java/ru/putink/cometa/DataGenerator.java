@@ -16,8 +16,6 @@ public class DataGenerator {
         for (int a=0;a<series.length;a++){
             series[a]=getRandomNumber(rightLimit+1);
         }
-      //  System.out.println(Arrays.toString(series));
-       // System.out.println(Arrays.toString(getCountsNumbersInArray(series,rightLimit)));
 
         return series;
     }

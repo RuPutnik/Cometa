@@ -63,12 +63,9 @@ public class FileExecutor{
                         Integer[] x=stringToArray(XLine);
                         Integer[] y=stringToArray(YLine);
 
-                        System.out.println(Arrays.toString(y));
                         for (int a=0;a<x.length;a++){
-                            System.out.println(a);
                             series.getData().add(new XYChart.Data<>(x[a],y[a]));
                         }
-
                         seriesList.add(series);
                     }
 

@@ -225,8 +225,8 @@ public class GeneralController extends Application implements Initializable{
         @Override
         public void handle(ActionEvent event) {
             int[] seriesNumbers=generator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
-            generatedValues.setText(Arrays.toString(seriesNumbers));
-            countEachValues.setText(Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
+            generatedValues.setText(generatedValues.getText()+" ; "+Arrays.toString(seriesNumbers));
+            countEachValues.setText(countEachValues+" ; "+Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
             XYChart.Series<Integer,Integer> series=generator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
             graphicsPane.getData().add(series);
             xAxis.setUpperBound(limitNumber);
@@ -239,7 +239,6 @@ public class GeneralController extends Application implements Initializable{
             fieldY2.setText(String.valueOf(countNumber));
             saveToFile.setDisable(false);
             COUNT_SERIES++;
-          //graphicsPane.setLegendSide(Side.RIGHT);
         }
     }
     private class DeleteSeries implements EventHandler<ActionEvent>{
