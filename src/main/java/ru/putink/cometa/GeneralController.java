@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -166,10 +167,12 @@ public class GeneralController extends Application implements Initializable{
     public class CountGeneration implements EventHandler<KeyEvent>{
         @Override
         public void handle(KeyEvent event) {
-            Integer count;
+            Integer count=0;
             try{
-                count=Integer.parseInt(countGeneration.getText());
-                if(event.getText().equals("-")) throw new NumberFormatException();
+                if(!countGeneration.getText().equals("")) {
+                    count = Integer.parseInt(countGeneration.getText());
+                    if (event.getText().equals("-")) throw new NumberFormatException();
+                }
             }catch (NumberFormatException ex){
                 count=DEFAULT_COUNT;
                 countGeneration.setText(String.valueOf(count));
@@ -185,10 +188,12 @@ public class GeneralController extends Application implements Initializable{
     public class LimitDigit implements EventHandler<KeyEvent>{
         @Override
         public void handle(KeyEvent event) {
-            Integer limit;
+            Integer limit=0;
             try{
-                limit=Integer.parseInt(limitDigitGeneration.getText());
-                if(event.getText().equals("-")) throw new NumberFormatException();
+                if(!limitDigitGeneration.getText().equals("")) {
+                    limit = Integer.parseInt(limitDigitGeneration.getText());
+                    if (event.getText().equals("-")) throw new NumberFormatException();
+                }
             }catch (NumberFormatException ex){
                 limit=DEFAULT_LIMIT_NUMBER;
                 limitDigitGeneration.setText(String.valueOf(limit));
@@ -214,12 +219,14 @@ public class GeneralController extends Application implements Initializable{
         public void handle(KeyEvent event) {
             Integer value;
             try{
-                value=Integer.parseInt(field.getText());
-                if(event.getText().equals("-")) throw new NumberFormatException();
-                if(upper){
-                    axis.setUpperBound(value);
-                }else {
-                    axis.setLowerBound(value);
+                if(!field.getText().equals("")) {
+                    value = Integer.parseInt(field.getText());
+                    if (event.getText().equals("-")) throw new NumberFormatException();
+                    if (upper) {
+                        axis.setUpperBound(value);
+                    } else {
+                        axis.setLowerBound(value);
+                    }
                 }
             }catch (NumberFormatException ex){
                 Alert invalidSign=new Alert(Alert.AlertType.ERROR);
@@ -240,8 +247,8 @@ public class GeneralController extends Application implements Initializable{
         @Override
         public void handle(ActionEvent event) {
             int[] seriesNumbers=generator.createSeriesNumbers(Integer.parseInt(countGeneration.getText()),Integer.parseInt(limitDigitGeneration.getText()));
-            generatedValues.setText(generatedValues.getText()+" ; "+Arrays.toString(seriesNumbers));
-            countEachValues.setText(countEachValues.getText()+" ; "+Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()))));
+            generatedValues.setText(generatedValues.getText()+Arrays.toString(seriesNumbers)+" ; ");
+            countEachValues.setText(countEachValues.getText()+Arrays.toString(generator.getCountsNumbersInArray(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText())))+" ; ");
             XYChart.Series<Integer,Integer> series=generator.getSeries(seriesNumbers,Integer.parseInt(limitDigitGeneration.getText()));
             graphicsPane.getData().add(series);
             xAxis.setUpperBound(limitNumber);
